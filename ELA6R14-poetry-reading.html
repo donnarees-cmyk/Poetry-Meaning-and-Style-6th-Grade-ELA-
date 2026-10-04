@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELA.6.R.1.4 Poetry Reading (Speaking and Listening)</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#172554;--bg:#eaf1fb;--line:#c9d6ea;--teal:#0d9488;--sun:#facc15}
+*{box-sizing:border-box}body{margin:0;font-family:Lexend,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:20px 14px 40px}
+header{background:var(--ink);color:#fff;border-radius:16px;padding:22px;margin-bottom:14px}
+header h1{margin:0 0 4px;font-size:clamp(1.3rem,4vw,1.9rem)}header p{margin:0;opacity:.85;font-size:.9rem}
+main{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+h3{margin:20px 0 6px}ol{padding-left:22px}li{margin:6px 0}
+button{font:inherit;cursor:pointer;color:inherit}button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.pass{background:var(--bg);border-left:6px solid var(--sun);border-radius:8px;padding:14px 16px;font-size:1.05rem;margin:10px 0}
+.think{background:#ccfbf1;border-radius:10px;padding:12px 14px;margin-top:10px}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:10px 18px;margin-top:10px}
+.btn.alt{background:#fff;color:var(--ink);border:2px solid var(--ink)}
+.meta{font-size:.85rem;opacity:.7;margin:0}.opts{display:grid;gap:8px;margin:10px 0}
+.opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:12px}
+.opt:hover:not(:disabled){border-color:var(--teal)}.opt.ok{background:#dcfce7;border-color:#16a34a}.opt.no{background:#fee2e2;border-color:#dc2626}
+.fb{border-radius:8px;padding:10px;margin:8px 0}.fb.ok{background:#dcfce7}.fb.no{background:#fef9c3}.done{text-align:center}
+</style></head><body><div class="wrap">
+<header><h1>Poetry Reading (Speaking and Listening)</h1><p>ELA.6.R.1.4: Describe the impact of various poetic forms on meaning and style.</p></header>
+<main aria-live="polite"><p class="goal" id="goal"></p><h3>How to do it</h3><ol id="steps"></ol>
+<h3>Watch a reader think</h3><div class="pass" id="pass"></div><button class="btn" id="show">Show how a reader thinks</button><div id="think"></div>
+<h3>Your turn</h3><div id="prac"></div></main></div>
+<script>
+/* ===== EDIT CONTENT HERE: goal, steps, p (example), think, tip, qs (c = optional passage for that question) ===== */
+const L={"goal": "Read a poem aloud so your voice shows its meaning and style.", "steps": ["Pause for punctuation, not just at the end of every line.", "Slow down, speed up, or change volume to match the mood.", "Stress the words that carry the most meaning."], "p": "Quiet.<br>The kettle ticks, waiting.<br>Then&mdash;<br>a whistle, sharp and bright,<br>and the whole kitchen wakes.", "think": "I read \"Quiet.\" slowly and softly with a pause. At the dash after \"Then,\" I pause to build suspense. \"A whistle, sharp and bright\" gets louder and quicker, because the sound is sudden.", "tip": "Match your pace and volume to the mood of the words.", "qs": [{"q": "How should a reader say \"Quiet.\"?", "a": "Slowly and softly, with a pause after it", "o": ["Slowly and softly, with a pause after it", "Loudly and fast", "In a joking voice", "Without stopping"], "e": "Your voice should match the stillness."}, {"q": "What should a reader do at the dash after \"Then\"?", "a": "Pause briefly to build suspense", "o": ["Pause briefly to build suspense", "Keep reading at the same speed", "Whisper the next line", "Skip the line"], "e": "A dash signals a pause before a surprise."}, {"q": "How should \"a whistle, sharp and bright\" sound?", "a": "Louder and crisper to match the sound", "o": ["Louder and crisper to match the sound", "Slow and sleepy", "Whispered", "Flat and quiet"], "e": "A sudden sharp sound deserves a sharp voice."}, {"q": "A line ends with no punctuation. How should you read it?", "a": "Keep the thought going with only a tiny pause", "o": ["Keep the thought going with only a tiny pause", "Stop completely", "Raise your voice", "Skip to the next stanza"], "e": "Pause for punctuation, not just at the line break.", "c": "I carry my umbrella<br>to the end of the street<br>and then the rain stops."}]};
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+$('goal').textContent=L.goal;$('steps').innerHTML=L.steps.map(s=>'<li>'+s+'</li>').join('');$('pass').innerHTML=L.p;
+$('show').onclick=()=>{$('think').innerHTML='<div class="think">💭 '+L.think+'</div>';$('show').hidden=true};
+function prac(qi,firsts){
+  const box=$('prac');
+  if(qi>=L.qs.length){box.innerHTML='<div class="done"><h3>Practice complete!</h3><p>You got '+firsts+' of '+L.qs.length+' on the first try.</p><button class="btn" id="rt">Try again</button></div>';$('rt').onclick=()=>prac(0,0);return}
+  const q=L.qs[qi],opts=shuffle(q.o);let tries=0,solved=false;
+  box.innerHTML='<p class="meta">Question '+(qi+1)+' of '+L.qs.length+'</p>'+(q.c?'<div class="pass">'+q.c+'</div>':'')+'<p><b>'+q.q+'</b></p><div class="opts">'+opts.map((o,k)=>'<button class="opt" data-k="'+k+'">'+o+'</button>').join('')+'</div><div id="fb"></div><button class="btn" id="nq" hidden>'+(qi+1<L.qs.length?'Next question':'Finish')+'</button>';
+  box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(solved)return;tries++;const ok=opts[b.dataset.k]===q.a;
+    if(ok){solved=true;b.classList.add('ok');box.querySelectorAll('.opt').forEach(o=>o.disabled=true);$('fb').innerHTML='<div class="fb ok">✓ Correct! '+q.e+'</div>';$('nq').hidden=false}
+    else{b.classList.add('no');b.disabled=true;$('fb').innerHTML='<div class="fb no">Not quite. Hint: '+L.tip+' Try another answer.</div>'}});
+  $('nq').onclick=()=>prac(qi+1,firsts+(tries===1?1:0));
+}
+prac(0,0);
+</script></body></html>
